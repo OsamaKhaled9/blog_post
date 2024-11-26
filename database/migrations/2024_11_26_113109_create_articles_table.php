@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('articles', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId("author_id")->constrained("authors");
-            $table->string ("title");
-            $table->string ("description");
-            $table->integer ("status");
+            $table->id(); // Primary key
+            $table->foreignId("author_id")->constrained("authors")->onDelete('cascade'); // Foreign key with cascade on delete
+            $table->string("title", 255)->nullable(false); // VARCHAR(255) NOT NULL
+            $table->string("description", 500)->nullable(false); // VARCHAR(500) NOT NULL
+            $table->integer("status")->default(0)->nullable(false); // INT NOT NULL DEFAULT 0
             $table->timestamps();
         });
     }

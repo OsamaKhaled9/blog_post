@@ -13,17 +13,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('authors', function (Blueprint $table) {
-            $table->id(); // primary key
-            $table->string('first_name'); //Author first name
-            $table->string('last_name'); //Author last name
-            $table->string('password'); // Author Password
-            $table->string('email')->unique(); // Author Email must be unique
-            $table->boolean('is_verified')->default(false); // Whether email is verified or not (default false)
-            $table->rememberToken(); // Author remember token when is logged in
-            $table->string('photo'); //Author Photo stored in database as string to the location
-            $table->string('bio');//Author bio
-            $table->timestamps();
-        });
+            $table->id(); // Primary key
+            $table->string('first_name', 255)->nullable(false); // VARCHAR(255) NOT NULL
+            $table->string('last_name', 255)->nullable(false); // VARCHAR(255) NOT NULL
+            $table->string('password', 255)->nullable(false); // Encrypted password, VARCHAR(255) NOT NULL
+            $table->string('email', 255)->unique()->nullable(false); // Unique email, VARCHAR(255) NOT NULL
+            $table->boolean('is_verified')->default(false)->nullable(false); // Email verification status, default false
+            $table->rememberToken(); 
+            $table->string('photo', 255)->nullable(true); // Optional, VARCHAR(255)
+            $table->string('bio', 50)->nullable(true); // Optional, VARCHAR(50)
+            $table->timestamps(); // Timestamps for created_at and updated_at
+    });
     }
 
     /**
