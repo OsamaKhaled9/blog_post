@@ -22,14 +22,14 @@ class AuthorDTO
     }
 
     public static function fromRequest(array $data): self
-    {
-        return new self(
-            first_name: $data['first_name'],
-            last_name: $data['last_name'],
-            email: $data['email'],
-            password: bcrypt($data['password'])
-        );
-    }
+{
+    return new self(
+        first_name: $data['first_name'],
+        last_name: $data['last_name'],
+        email: $data['email'],
+        password: $data['password'] // Raw password, hash inside constructor
+    );
+}
 
     public function getFirstName(): string
     {
