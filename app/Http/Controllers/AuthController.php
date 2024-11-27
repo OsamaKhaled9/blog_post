@@ -18,7 +18,9 @@ class AuthController extends Controller
             'password' => 'required|min:8',
         ]);
 
+        //dd($validated);
         $authorDTO = AuthorDTO::fromRequest($validated);
+        //dd(vars: "Hii");
         $result = $this->authService->register($authorDTO);
 
         return response()->json($result, 201);

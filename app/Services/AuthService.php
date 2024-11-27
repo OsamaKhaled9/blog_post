@@ -16,6 +16,7 @@ class AuthService
 
     public function register(AuthorDTO $authorDTO): array
     {
+        //dd($authorDTO); // Ensure the DTO is correct before further processing
         $existingAuthor = $this->authorRepository->findByEmail($authorDTO->getEmail());
         if ($existingAuthor) {
             throw new \Exception('Email already exists');
@@ -23,10 +24,10 @@ class AuthService
 
         $author = $this->authorRepository->create($authorDTO);
         event(new Registered( $author));
-
         dispatch(new SendVerificationEmail($author));
 
         $token = $author->createToken('auth_token')->plainTextToken;
+        
 
         return [
             'author' => $author,

@@ -23,11 +23,12 @@ class AuthorDTO
 
     public static function fromRequest(array $data): self
 {
+    //dd($data); // Check incoming data structure
     return new self(
         first_name: $data['first_name'],
         last_name: $data['last_name'],
         email: $data['email'],
-        password: $data['password'] // Raw password, hash inside constructor
+        password: bcrypt($data['password'])
     );
 }
 
