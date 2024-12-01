@@ -6,7 +6,7 @@ use App\Jobs\SendVerificationEmail;
 use App\Models\Author;
 use App\Repositories\AuthorRepository;
 use Illuminate\Auth\Events\Registered;
-
+use Illuminate\Support\Str;
 
 class AuthService
 {
@@ -16,19 +16,22 @@ class AuthService
 
     public function register(AuthorDTO $authorDTO): array
     {
-        //dd($authorDTO); // Ensure the DTO is correct before further processing
         $existingAuthor = $this->authorRepository->findByEmail($authorDTO->getEmail());
         if ($existingAuthor) {
             throw new \Exception('Email already exists');
         }
 
-        $author = $this->authorRepository->create($authorDTO);
-        event(new Registered( $author));
+        // Generate the verification token
+        $verificationToken = Str::random(60);
+
+        // Create the author with the verification token
+        $author = $this->authorRepository->createWithVerificationToken($authorDTO, $verificationToken);
+        
+        // Dispatch the email verification job
         dispatch(new SendVerificationEmail($author));
 
+        // Return the newly created author and token (authentication token for API)
         $token = $author->createToken('auth_token')->plainTextToken;
-        
-
         return [
             'author' => $author,
             'token' => $token,

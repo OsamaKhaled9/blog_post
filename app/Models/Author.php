@@ -14,12 +14,14 @@ class Author extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
-        "first_name",
-        "last_name",
-        "email",
-        "password",
-    ];
-
+        'first_name',
+        'last_name',
+        'email',
+        'password',
+        'verification_token', // Add this line
+        'is_verified',
+        
+    ];    
     protected $hidden = [
         "password",
         "remember_token",
@@ -29,8 +31,12 @@ class Author extends Authenticatable
         "password"=> "hashed",
     ];
 
-    public function articles()
+    /*public function articles()
     {
         return $this->hasMany(Article::class);
+    }*/
+
+    public function articles() {
+        return $this->belongsToMany(Article::class, 'article_author', 'author_id', 'article_id');
     }
 }
