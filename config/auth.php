@@ -38,7 +38,11 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'authors',
+        ],
+        'api' => [
+            'driver' => 'sanctum',
+            'provider' => 'authors',
         ],
     ],
 
@@ -60,7 +64,7 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'authors' => [
             'driver' => 'eloquent',
             'model' => App\Models\Author::class,
         ],

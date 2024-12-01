@@ -17,6 +17,16 @@ class AuthorRepository
             'is_verified' => false // Set initial verification status to false
         ]);
     }
+    public function findVerifiedByEmail(string $email): ?Author
+    {
+        return Author::where('email', $email)
+            ->where('is_verified', true)
+            ->first();
+    }
+    public function create(array $data): Author
+    {
+        return Author::create($data);
+    }
 
     public function findByEmail(string $email): ?Author
     {
