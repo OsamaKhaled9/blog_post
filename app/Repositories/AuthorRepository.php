@@ -5,6 +5,7 @@ use App\DTOs\AuthorDTO;
 use App\Enums\ArticleStatus;
 use App\Models\Author;
 use \Illuminate\Database\Eloquent\Collection;
+use App\Models\Article;
 class AuthorRepository
 {
     public function createWithVerificationToken(AuthorDTO $authorDTO, string $verificationToken): Author
@@ -19,13 +20,21 @@ class AuthorRepository
         ]);
     }
     public function findAuthorsArticles()
-{
-    return Author::withCount([
-        'articles as articles_count' => function ($query) {
+    {
+        return Author::withCount([
+            'articles as articles_count' => function ($query) {
             $query->where('status', 2); // Assuming status = 2 indicates "published"
-        }
-    ])->get();
-}
+            }
+         ])->get();
+    }
+    /**************************************************************************************************** */
+    public function findAllArticles()//need to be edited 
+    {
+        return Article::
+            with(['author'])
+            ->paginate(100);
+    }
+    /**************************************************************************************************** */
 
     public function findVerifiedByEmail(string $email): ?Author
     {

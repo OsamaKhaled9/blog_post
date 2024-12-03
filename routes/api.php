@@ -27,7 +27,9 @@ Route::get('/verify-email', [AuthController::class, 'verifyEmail'])->name('verif
 
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::get('getauthors', [Controller::class, 'fetchAuthors']);
+Route::get('/getauthors', [Controller::class, 'fetchAuthors']);
 
+Route::get('/getarticles',[Controller::class, 'fetchArticles']);
 
+Route::get('/getarticlebyauthor/{id}',[Controller::class, 'fetchArticleByAuthor']);
 

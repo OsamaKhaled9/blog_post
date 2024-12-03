@@ -23,7 +23,28 @@ class AuthorDTO implements \JsonSerializable
         $this->password = $password;
         $this->articles_count = $articles_count;
     }
+    //Function used while registering
+    public static function fromRequest(array $data): self
+    {
+        return new self(
+            first_name: $data['first_name'],
+            last_name: $data['last_name'],
+            email: $data['email'],
+            password: bcrypt($data['password']),  
+        );
+    }
 
+    //Function used while logging in
+    public static function fromLoginRequest(array $data): self
+    {
+        return new self(
+            first_name: null,
+            last_name: null,
+            email: $data['email'],
+            password: $data['password']  // Password is not hashed during login
+        );
+    }
+    //Function used while getting the authors and their articles count 
     public static function fromGetAuthorsRequest(array $data): self
     {
         return new self(
@@ -43,4 +64,12 @@ class AuthorDTO implements \JsonSerializable
             'articles_count' => $this->articles_count,
         ];
     }
+    public function getFirstName()  { return  $this->first_name; } 
+    
+    public function getLastName()  { return  $this->last_name; } 
+
+    public function getEmail()  { return  $this->email; }
+    
+    public function getPassword()  { return  $this->password; }
+
 }

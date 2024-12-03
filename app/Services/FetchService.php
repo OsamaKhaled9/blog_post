@@ -3,15 +3,17 @@ namespace App\Services;
 
 use App\DTOs\AuthorDTO;
 use App\Repositories\AuthorRepository;
-
+use App\DTOs\ArticleDTO;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 class FetchService
 {
     public function __construct(
-        private AuthorRepository $authorRepository
+        private AuthorRepository $authorRepository,
     ) {}
 
     public function fetchAllAuthors(): array
-{
+    {
     $authors = $this->authorRepository->findAuthorsArticles();
 
     return $authors->map(function ($author) {
@@ -22,6 +24,19 @@ class FetchService
             articles_count: $author->articles_count
         );
     })->toArray();
-}
+    }
 
+    public function fetchAllArticles() 
+    {
+       return $this->authorRepository->findAllArticles();
+       /* return $articles->map(function ($article) {
+            return new ArticleDTO(
+                title: $article->title,
+                description : $article->description,
+                //status : $article->status,
+                author_id : $article->author_id,
+            );
+        })->toArray();*/
+
+    }
 }
