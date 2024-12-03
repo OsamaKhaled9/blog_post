@@ -8,7 +8,7 @@ use \Illuminate\Database\Eloquent\Collection;
 use App\Models\Article;
 class AuthorRepository
 {
-    public function createWithVerificationToken(AuthorDTO $authorDTO, string $verificationToken): Author
+    /*public function createWithVerificationToken(AuthorDTO $authorDTO, string $verificationToken): Author
     {
         return Author::create([
             'first_name' => $authorDTO->getFirstName(),
@@ -18,7 +18,7 @@ class AuthorRepository
             'verification_token' => $verificationToken,
             'is_verified' => false // Set initial verification status to false
         ]);
-    }
+    }*/
     public function findAuthorsArticles()
     {
         return Author::withCount([

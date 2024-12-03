@@ -2,7 +2,9 @@
 namespace App\Http\Controllers;
 
 use App\DTOs\AuthorDTO;
+use App\DTOs\UserDTO;
 use App\Repositories\AuthorRepository;
+use App\Repositories\UserRepository;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -10,49 +12,52 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function __construct(private AuthService $authService, private AuthorRepository $authorRepository) {}
+    public function __construct(private AuthService $authService, private AuthorRepository $authorRepository,private UserRepository $userRepository) {}
 
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            //'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:authors,email',
             'password' => 'required|min:8',
         ]);
 
-        $authorDTO = AuthorDTO::fromRequest($validated);
-        $result = $this->authService->register($authorDTO);
+        $userDTO = UserDTO::fromRegisterRequest($validated);
+        $result = $this->authService->register($userDTO);
 
         return response()->json($result, 201);
     }
 
     public function verifyEmail(Request $request)
     {
-        // Retrieve the token from the URL
-        $token = $request->query('token');
+        // Retrieve the email from the URL
+        $email = $request->email;
 
-        // Find the author by the token
-        $author = $this->authorRepository->findByToken($token);
+        // Find the author by the email address
+        $user = $this->userRepository->findByEmail($email);
+       // dd($user);
 
-        if (!$author) {
+        if (!$user) {
             return response()->json(['message' => 'Invalid token'], 400);
         }
 
         // Check if the email is already verified
-        if ($author->is_verified) {
+        if ($user->email_verified_at ) {
             return response()->json(['message' => 'Email already verified'], 200);
         }
 
         // Update the author record
-        $author->is_verified = true;
-        $author->verification_token = null; // Clear the token after verification
-        $author->save();
+        //dd($user->email_verified_at);
+        $user->email_verified_at = now();
+        //$author->verification_token = null; // Clear the token after verification
+        $user->save();
 
         return response()->json([
             'message' => 'Email verified successfully',
-            'author' => $author
+            'user' => $user
         ], 200);
+
     }
 
     public function login(Request $request)
