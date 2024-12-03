@@ -39,4 +39,12 @@ class FetchService
         })->toArray();*/
 
     }
+    public function fetchArticlesByAuthor($authorId)
+    {
+        return $this->authorRepository->fetchArticlesByAuthor($authorId);
+    }
+    public function getAuthorByAuthorId($authorId)
+    {
+        return $this->authorRepository->findAuthorById($authorId);
+    }
 }

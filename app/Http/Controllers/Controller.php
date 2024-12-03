@@ -30,4 +30,15 @@ public function fetchArticles(Request $request)
        'articles' => ArticlesResource::collection($articles)
     ], 200);
 }
+
+public function fetchArticleByAuthor(Request $request)
+{
+    $articles = $this->fetchService->fetchArticlesByAuthor($request->id);
+    $authorname = $this->fetchService->getAuthorByAuthorId($request->id);
+    $authorName = $authorname->first_name; // Extract the first name
+    return response()->json([
+        'message' => 'The articles of author ' . $request->id.' named '.$authorName,
+        'articles' => ArticlesResource::collection($articles)
+    ],200);
+}
 }

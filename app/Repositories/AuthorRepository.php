@@ -27,15 +27,20 @@ class AuthorRepository
             }
          ])->get();
     }
-    /**************************************************************************************************** */
+    
     public function findAllArticles()//need to be edited 
     {
         return Article::
             with(['author'])
             ->paginate(100);
     }
+    
     /**************************************************************************************************** */
-
+    public function fetchArticlesByAuthor($author_id)
+    {
+        return Article::where('author_id', $author_id)->paginate(10);
+    }
+    /**************************************************************************************************** */
     public function findVerifiedByEmail(string $email): ?Author
     {
         return Author::where('email', $email)
@@ -56,4 +61,8 @@ class AuthorRepository
     {
         return Author::where('verification_token', $token)->first();
     }
+    public function findAuthorById($author_id)
+{
+    return Author::select('first_name')->find($author_id);
+}
 }
