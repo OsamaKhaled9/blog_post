@@ -69,31 +69,31 @@ class AuthController extends Controller
     ]);
 
     // Create an AuthorDTO specifically for login
-    $authorDTO = AuthorDTO::fromLoginRequest($credentials);
-
+    $UserDTO = UserDTO::fromLoginRequest($credentials);
+    //dd($UserDTO); 
     // Use the repository to find the verified author
-    $author = $this->authorRepository->findVerifiedByEmail($authorDTO->getEmail());
-
-    if (!$author) {
+    $User = $this->userRepository->findVerifiedByEmail($UserDTO->getEmail());
+    //dd($User);
+    if (!$User) {
         return response()->json(['message' => 'Account not verified or does not exist'], 403);
     }
 
     // Verify the password
-    if (!\Hash::check($authorDTO->getPassword(), $author->password)) {
+    if (!\Hash::check($UserDTO->getPassword(), $User->password)) {
         return response()->json(['message' => 'Invalid credentials'], 401);
     }
 
     // Generate a Sanctum token
-    $token = $author->createToken('auth_token')->plainTextToken;
+    $token = $User->createToken('auth_token')->plainTextToken;
 
     return response()->json([
         'message' => 'Login successful',
         'token' => $token,
-        'author' => [
-            'id' => $author->id,
-            'first_name' => $author->first_name,
-            'last_name' => $author->last_name,
-            'email' => $author->email,
+        'User' => [
+            'id' => $User->id,
+            'name' => $User->name,
+            //'last_name' => $author->last_name,
+            'email' => $User->email,
         ],
     ], 200);
 }

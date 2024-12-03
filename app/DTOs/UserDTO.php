@@ -29,15 +29,15 @@ class UserDTO implements \JsonSerializable
     }
 
     //Function used while logging in
-    /*public static function fromLoginRequest(array $data): self
+    public static function fromLoginRequest(array $data): self
     {
         return new self(
-            first_name: null,
-            last_name: null,
+            name: null,
+            //last_name: null,
             email: $data['email'],
             password: $data['password']  // Password is not hashed during login
         );
-    }*/
+    }
     public function jsonSerialize(): array
     {
         return [

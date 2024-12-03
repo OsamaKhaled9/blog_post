@@ -23,6 +23,12 @@ class UserRepository
             //'verification_token' => $verificationToken,
         ]);
     }
+    public function findVerifiedByEmail(string $email): ?User
+    {
+        return User::where('email', $email)
+        ->whereNotNull('email_verified_at')
+        ->first();
+    }
     public function findByToken(string $email): ?User
     {
         //dd($email);
