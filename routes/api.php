@@ -33,3 +33,8 @@ Route::get('/getarticles',[Controller::class, 'fetchArticles']);
 
 Route::get('/getarticlebyauthor/{id}',[Controller::class, 'fetchArticleByAuthor']);
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/favorites/add', [Controller::class, 'addToFavorites']);
+    Route::delete('/favorites/remove', [Controller::class, 'removeFromFavorites']);
+    Route::get('/favorites/get/{id}', [Controller::class, 'getFavorites']);
+});
