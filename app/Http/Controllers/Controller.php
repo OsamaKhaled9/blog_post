@@ -63,13 +63,16 @@ public function fetchArticleByAuthor(Request $request)
         return response()->json(['message' => 'Article was not in favorites.'], 400);
     }
     public function getFavorites(Request $request)
-    {
-        $articles = $this->favoriteService->fetchfavoriteArticles($request->id);
-        dd($articles);
-         return response()->json([
+{
+    $userId = $request->user()->id; // Use authenticated user ID
+
+    $articles = $this->favoriteService->fetchFavoriteArticles($userId);
+
+    return response()->json([
         'message' => 'Here are your favorite articles',
-       'articles' => ArticlesResource::collection($articles)
+        'articles' => ArticlesResource::collection($articles),
     ], 200);
-    }
+}
+
 
 }

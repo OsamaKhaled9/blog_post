@@ -45,6 +45,7 @@ class FavoriteRepository
 
     public function fetchFavoriteArticles(User $user , $id)
     {
-        return $user->favorites()->where('user_id', $id)->first();
+       // return $user->favorites()->where('user_id', $id)->first();
+        return User::findOrFail($id)->favorites; // returns a collection of Article models, not a single instance.
     }
 }
