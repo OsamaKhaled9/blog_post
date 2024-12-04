@@ -37,4 +37,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/favorites/add', [Controller::class, 'addToFavorites']);
     Route::delete('/favorites/remove', [Controller::class, 'removeFromFavorites']);
     Route::get('/favorites/get/{id}', [Controller::class, 'getFavorites']);
+    Route::post('/reports', [Controller::class, 'reportAuthor']); // Route for reporting an author
 });

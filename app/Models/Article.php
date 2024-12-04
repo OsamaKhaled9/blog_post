@@ -34,5 +34,9 @@ class Article extends Model
     {
         return $this->belongsToMany(User::class, 'favorites', 'article_id', 'user_id');
     }
-
+    
+    public function reports()
+    {
+        return $this->hasMany(Report::class, 'author_id'); // Reports related to this article's author
+    }
 }

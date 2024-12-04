@@ -47,4 +47,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Article::class, 'favorites', 'user_id', 'article_id');
     }
+
+    public function reports()
+    {
+        return $this->hasMany(Report::class);
+    }
 }
