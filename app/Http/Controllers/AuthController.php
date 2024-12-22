@@ -15,24 +15,6 @@ class AuthController extends Controller
 {
     public function __construct(private AuthService $authService, private AuthorRepository $authorRepository,private UserRepository $userRepository) {}
 
-    public function register(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            //'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:authors,email',
-            'password' => 'required|min:8',
-        ]);
-
-        $userDTO = UserDTO::fromRegisterRequest($validated);
-        $result = $this->authService->register($userDTO);
-
-        return response()->json([
-            'data' => $result,
-
-        ], Response::HTTP_CREATED);
-    }
-
     public function verifyEmail(Request $request)
     {
         // Retrieve the email from the URL
@@ -60,7 +42,7 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Email verified successfully',
             'user' => $user
-        ], 200);
+        ], Response::HTTP_CREATED);
 
     }
 

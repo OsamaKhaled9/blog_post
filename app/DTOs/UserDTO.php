@@ -2,18 +2,17 @@
 
 namespace App\DTOs;
 
-class UserDTO implements \JsonSerializable
+use App\Abstracts\AbstractDTO;
+
+class UserDTO extends AbstractDTO
 {
     private ?string $name;
     private string $email;
     private ?string $password;
 
 
-    public function __construct(
-        ?string $name = null,
-        string $email,
-        ?string $password = null,
-    ) {
+    public function __construct(?string $name = null,string $email,?string $password = null,)
+     {
         $this->name = $name;
         $this->email = $email;
         $this->password = $password;
@@ -24,7 +23,7 @@ class UserDTO implements \JsonSerializable
         return new self(
             name: $data['name'],
             email: $data['email'],
-            password: bcrypt($data['password']),  
+            password: $data['password'],  
         );
     }
 

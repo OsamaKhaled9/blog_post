@@ -40,7 +40,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        //'password' => 'hashed',
     ];
 
     public function favorites()
@@ -52,4 +52,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Report::class);
     }
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
+
 }
