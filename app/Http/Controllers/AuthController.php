@@ -9,6 +9,7 @@ use App\Services\AuthService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
@@ -26,7 +27,10 @@ class AuthController extends Controller
         $userDTO = UserDTO::fromRegisterRequest($validated);
         $result = $this->authService->register($userDTO);
 
-        return response()->json($result, 201);
+        return response()->json([
+            'data' => $result,
+
+        ], Response::HTTP_CREATED);
     }
 
     public function verifyEmail(Request $request)

@@ -10,7 +10,7 @@ use App\Repositories\UserRepository;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Str;
 
-class AuthService
+class AuthService 
 {
     public function __construct(
         private UserRepository $UserRepository
